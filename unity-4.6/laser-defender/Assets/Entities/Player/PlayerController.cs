@@ -5,6 +5,9 @@ public class PlayerController : MonoBehaviour {
 
 	public float speed = 15.0f;
 	public float padding = 1f;
+	public GameObject laserPrefab;
+	public float projectileSpeed;
+	public float firingRate = 0.2f;
 
 	float xmin, xmax;
 
@@ -27,5 +30,17 @@ public class PlayerController : MonoBehaviour {
 		// restricts the player to the game space
 		float newX = Mathf.Clamp (transform.position.x, xmin, xmax);
 		transform.position = new Vector3 (newX, transform.position.y, transform.position.z);
+	
+		if (Input.GetKeyDown(KeyCode.Space)) {
+			InvokeRepeating("Fire", 0.000001f, firingRate);
+		}
+		if (Input.GetKeyUp(KeyCode.Space)) {
+			CancelInvoke("Fire");
+		}
+	}
+
+	void Fire() {
+		GameObject beam = Instantiate (laserPrefab, transform.position, Quaternion.identity) as GameObject;
+		beam.rigidbody2D.velocity = new Vector2(0, projectileSpeed);
 	}
 }
