@@ -1,12 +1,13 @@
 ﻿using UnityEngine;
 using System.Collections;
 
-public class EnemySpawner : MonoBehaviour {
+public class FormationController : MonoBehaviour {
 
 	public GameObject enemyPrefab;
 	public float width = 14f;
 	public float height = 7f;
 	public float speed = 5f;
+	public float spawnDelay = 0.5f;
 
 	private float xmin;
 	private float xmax;
@@ -20,9 +21,26 @@ public class EnemySpawner : MonoBehaviour {
 		xmin = leftMost.x;
 		xmax = rightMost.x;
 
+		SpawnUntilFull();
+	}
+
+	void SpawnEnemies() {
 		foreach(Transform child in transform){
 			GameObject enemy = Instantiate(enemyPrefab, child.transform.position, Quaternion.identity) as GameObject;
 			enemy.transform.parent = child;
+		}
+	}
+
+	void SpawnUntilFull() {
+		Transform freePosition = NextFreePosition();
+
+		if (freePosition) {
+			GameObject enemy = Instantiate(enemyPrefab, freePosition.position, Quaternion.identity) as GameObject;
+			enemy.transform.parent = freePosition;
+		}
+
+		if (NextFreePosition()) {
+			Invoke ("SpawnUntilFull", spawnDelay);
 		}
 	}
 
@@ -44,5 +62,27 @@ public class EnemySpawner : MonoBehaviour {
 		} else {
 			transform.position += Vector3.left * speed * Time.deltaTime;
 		}
+
+		if (AllMembersAreDead()) {
+			SpawnUntilFull();
+		}
+	}
+
+	Transform NextFreePosition() {
+		foreach(Transform childPosition in transform) {
+			if (childPosition.childCount == 0) {
+				return childPosition;
+			}
+		}
+		return null;
+	}
+
+	public bool AllMembersAreDead() {
+		foreach(Transform childPosition in transform) {
+			if (childPosition.childCount > 0) {
+				return false;
+			}
+		}
+		return true;
 	}
 }
