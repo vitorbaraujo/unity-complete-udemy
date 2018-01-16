@@ -9,6 +9,9 @@ public class EnemyBehavior : MonoBehaviour {
 	public float shotsPerSecond = 0.5f;
 	public int scoreValue = 150;
 
+	public AudioClip fireSound;
+	public AudioClip destroyedSound;
+
 	private ScoreController scoreController;
 
 	void Start() {
@@ -29,15 +32,20 @@ public class EnemyBehavior : MonoBehaviour {
 			missile.Hit();
 
 			if (health <= 0) {
-				Destroy (gameObject);
-				scoreController.Score(scoreValue);
+				Die();
 			}
 		}
 	}
 
 	void Fire() {
-		Vector3 startPosition = transform.position + new Vector3(0, -1, 0);
-		GameObject beam = Instantiate (laserPrefab, startPosition, Quaternion.identity) as GameObject;
+		GameObject beam = Instantiate (laserPrefab, transform.position, Quaternion.identity) as GameObject;
 		beam.rigidbody2D.velocity = new Vector2(0, -projectileSpeed);
+		AudioSource.PlayClipAtPoint(fireSound, transform.position);
+	}
+
+	void Die() {
+		AudioSource.PlayClipAtPoint(destroyedSound, transform.position);
+		scoreController.Score(scoreValue);
+		Destroy (gameObject);
 	}
 }

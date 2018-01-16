@@ -8,6 +8,7 @@ public class PlayerController : MonoBehaviour {
 	public float projectileSpeed;
 	public float firingRate = 0.2f;
 	public float health = 250f;
+	public AudioClip fireSound;
 
 	float xmin, xmax;
 
@@ -40,8 +41,8 @@ public class PlayerController : MonoBehaviour {
 	}
 
 	void Fire() {
-		Vector3 startPosition = transform.position + new Vector3(0, 1, 0);
-		GameObject beam = Instantiate (laserPrefab, startPosition, Quaternion.identity) as GameObject;
+		AudioSource.PlayClipAtPoint(fireSound, transform.position);
+		GameObject beam = Instantiate (laserPrefab, transform.position, Quaternion.identity) as GameObject;
 		beam.rigidbody2D.velocity = new Vector2(0, projectileSpeed);
 	}
 
