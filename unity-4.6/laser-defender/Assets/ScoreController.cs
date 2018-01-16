@@ -4,7 +4,7 @@ using System.Collections;
 
 public class ScoreController : MonoBehaviour {
 
-	private int currentScore = 0;
+	public static int score = 0;
 	private Text myText;
 
 	void Start() {
@@ -13,12 +13,11 @@ public class ScoreController : MonoBehaviour {
 	}
 
 	public void Score(int points) {
-		currentScore += points;
-		myText.text = currentScore.ToString();
+		score += points;
+		myText.text = score.ToString();
 	}
 
-	public void Reset() {
-		currentScore = 0;
-		myText.text = currentScore.ToString ();
+	public static void Reset() {
+		score = 0;
 	}
 }
