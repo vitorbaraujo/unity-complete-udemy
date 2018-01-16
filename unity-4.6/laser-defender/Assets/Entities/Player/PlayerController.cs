@@ -2,7 +2,6 @@
 using System.Collections;
 
 public class PlayerController : MonoBehaviour {
-
 	public float speed = 15.0f;
 	public float padding = 1f;
 	public GameObject laserPrefab;

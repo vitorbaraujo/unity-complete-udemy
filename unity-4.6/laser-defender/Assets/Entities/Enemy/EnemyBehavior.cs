@@ -7,7 +7,14 @@ public class EnemyBehavior : MonoBehaviour {
 	public GameObject laserPrefab;
 	public float projectileSpeed;
 	public float shotsPerSecond = 0.5f;
-	
+	public int scoreValue = 150;
+
+	private ScoreController scoreController;
+
+	void Start() {
+		scoreController = GameObject.Find ("Score").GetComponent<ScoreController>();
+	}
+
 	void Update() {
 		float probability = shotsPerSecond * Time.deltaTime;
 		if (Random.value < probability) {
@@ -20,9 +27,10 @@ public class EnemyBehavior : MonoBehaviour {
 		if (missile) {
 			health -= missile.GetDamage();
 			missile.Hit();
-			
+
 			if (health <= 0) {
 				Destroy (gameObject);
+				scoreController.Score(scoreValue);
 			}
 		}
 	}
