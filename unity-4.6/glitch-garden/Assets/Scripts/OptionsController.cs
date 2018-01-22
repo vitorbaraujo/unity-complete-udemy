@@ -9,8 +9,7 @@ public class OptionsController : MonoBehaviour {
 	public LevelManager levelManager;
 
 	private MusicManager musicManager;
-
-	// Use this for initialization
+	
 	void Start () {
 		Debug.Log(PlayerPrefsManager.GetDifficulty());
 		musicManager = GameObject.FindObjectOfType<MusicManager>();
@@ -19,8 +18,7 @@ public class OptionsController : MonoBehaviour {
 		volumeSlider.value = PlayerPrefsManager.GetMasterVolume();
 		difficultySlider.value = PlayerPrefsManager.GetDifficulty();
 	}
-	
-	// Update is called once per frame
+
 	void Update () {
 		musicManager.SetVolume(volumeSlider.value);
 	}
